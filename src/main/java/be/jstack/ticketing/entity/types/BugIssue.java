@@ -1,6 +1,5 @@
 package be.jstack.ticketing.entity.types;
 
-import be.jstack.ticketing.entity.Description;
 import be.jstack.ticketing.entity.Environment;
 import be.jstack.ticketing.entity.User;
 import lombok.Data;
@@ -28,7 +27,9 @@ public class BugIssue {
     private String type;
 
     private Environment environment;
-    private Description description;
+    private String simulateSteps;
+    private String currentOutcome;
+    private String expectedOutcome;
 
     private ArrayList<Image> printscreens;
     private User user;

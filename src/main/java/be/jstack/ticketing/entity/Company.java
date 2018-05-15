@@ -9,10 +9,9 @@ import javax.persistence.Id;
 @Data
 @Entity
 @NoArgsConstructor
-public class Project {
+public class Company {
 
     @Id
     private String id;
-    private String title;
-    private Company company;
+    private String name;
 }

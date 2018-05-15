@@ -26,6 +26,8 @@ public class Improvement {
     private String type;
 
     private String improvementExplanation;
+    private String currentFeature;
+    private String improvement;
 
     private ArrayList<Image> printscreens;
     private User user;
