@@ -25,7 +25,7 @@ public class TicketController {
     }
 
     @GetMapping
-    public Stream<BugIssue> getAllTickets(){
+    public Stream getAllTickets() {
         return ticketService.findAllTickets().stream();
     }
 
@@ -33,14 +33,14 @@ public class TicketController {
     public void addNewTicket(@RequestBody String ticket, @RequestParam(value = "tickettype") String tickettype) throws IOException {
         switch (TicketTypes.valueOf(tickettype.toUpperCase())) {
             case BUG:
-                ticketService.createNewBugIssue(mapper.readValue(ticket, BugIssue.class));
+                ticketService.createNewTicket(mapper.readValue(ticket, BugIssue.class));
                 break;
             case IMPROVEMENT:
             case CHANGE:
-                ticketService.createNewImprovement(mapper.readValue(ticket, Improvement.class));
+                ticketService.createNewTicket(mapper.readValue(ticket, Improvement.class));
                 break;
             case NEWFEATURE:
-                ticketService.createNewNewFeature(mapper.readValue(ticket, NewFeature.class));
+                ticketService.createNewTicket(mapper.readValue(ticket, NewFeature.class));
         }
     }
 }

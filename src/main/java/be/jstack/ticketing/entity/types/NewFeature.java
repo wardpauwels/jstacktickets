@@ -1,30 +1,19 @@
 package be.jstack.ticketing.entity.types;
 
-import be.jstack.ticketing.entity.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.awt.*;
-import java.util.ArrayList;
+import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @NoArgsConstructor
-public class NewFeature {
-
-    @Id
-    private String id;
-    private String title;
-    private String priorityLevel;
-    private String url;
-    private String type;
+@Document(collection = "ticket")
+public class NewFeature extends Ticket implements Serializable {
 
     private String description;
-
-    private ArrayList<Image> printscreens;
-    private String username;
 }

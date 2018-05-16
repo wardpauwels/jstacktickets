@@ -2,6 +2,7 @@ package be.jstack.ticketing.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,13 +24,9 @@ public class User implements UserDetails {
     private String lastName;
     private String firstName;
     private String phoneNumber;
-    private String companyId;
+    @DBRef
+    private Company company;
     private List<GrantedAuthority> authorities;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
