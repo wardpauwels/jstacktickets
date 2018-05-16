@@ -17,9 +17,7 @@ import java.util.ArrayList;
 public class NewFeature {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+    private String id;
     private String title;
     private String priorityLevel;
     private String url;
@@ -28,5 +26,5 @@ public class NewFeature {
     private String description;
 
     private ArrayList<Image> printscreens;
-    private User user;
+    private String username;
 }

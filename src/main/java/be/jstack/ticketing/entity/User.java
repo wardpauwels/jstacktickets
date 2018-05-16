@@ -3,7 +3,6 @@ package be.jstack.ticketing.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
@@ -18,20 +17,18 @@ public class User implements UserDetails {
 
     @Id
     private String id;
-
     private String username;
     private String password;
     private String email;
     private String lastName;
     private String firstName;
     private String phoneNumber;
-    private Company Company;
+    private String companyId;
     private List<GrantedAuthority> authorities;
 
-    public User(String username, String password, String[] authorities) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.authorities = AuthorityUtils.createAuthorityList(authorities);
     }
 
     @Override

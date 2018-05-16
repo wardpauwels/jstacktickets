@@ -20,7 +20,6 @@ public class ProjectService {
     public List<Project> findAllProjects() {
         return projectRepository.findAll();
     }
-
     public void addProject(Project project) {
         projectRepository.save(project);
     }

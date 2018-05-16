@@ -14,5 +14,5 @@ public class Project {
     @Id
     private String id;
     private String title;
-    private Company company;
+    private String companyId;
 }

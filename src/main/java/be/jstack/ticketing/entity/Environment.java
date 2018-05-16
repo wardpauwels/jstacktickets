@@ -14,8 +14,7 @@ import javax.persistence.Id;
 public class Environment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
     private String device;
     private String operatingSystem;
