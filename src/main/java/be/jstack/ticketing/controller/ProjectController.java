@@ -28,9 +28,8 @@ public class ProjectController {
         return projectService.findProjectById(projectId);
     }
 
-
     @PostMapping
-    public void addNewProject(@RequestBody Project project) {
-        projectService.addProject(project);
+    public Project addNewProject(@RequestBody Project project) {
+        return projectService.addProject(project);
     }
 }

@@ -1,7 +1,5 @@
-package be.jstack.ticketing.entity.types;
+package be.jstack.ticketing.entity;
 
-import be.jstack.ticketing.entity.Project;
-import be.jstack.ticketing.entity.User;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 

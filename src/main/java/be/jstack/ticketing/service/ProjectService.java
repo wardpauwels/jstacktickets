@@ -20,8 +20,9 @@ public class ProjectService {
     public List<Project> findAllProjects() {
         return projectRepository.findAll();
     }
-    public void addProject(Project project) {
-        projectRepository.save(project);
+
+    public Project addProject(Project project) {
+        return projectRepository.save(project);
     }
 
     public Optional<Project> findProjectById(String projectId) {

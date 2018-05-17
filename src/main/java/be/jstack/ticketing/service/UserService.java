@@ -3,6 +3,7 @@ package be.jstack.ticketing.service;
 import be.jstack.ticketing.data.UserRepository;
 import be.jstack.ticketing.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,15 +30,20 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public void addUser(User user) {
+    public User addUser(User user) {
         if (!findUserByUsername(user.getUsername()).isPresent()) {
             user.setPassword(encoder.encode(user.getPassword()));
-            userRepository.save(user);
+            return userRepository.save(user);
         }
+        return null;
     }
 
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    Optional<User> findUserById(String userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
@@ -49,5 +55,10 @@ public class UserService implements UserDetailsService {
             User user = optUser.get();
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), emptyList());
         }
+    }
+
+    Optional<User> getCurrentLoggedInUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findUserByUsername(username);
     }
 }

@@ -1,5 +1,6 @@
-package be.jstack.ticketing.entity.types;
+package be.jstack.ticketing.entity.tickttypes;
 
+import be.jstack.ticketing.entity.Ticket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

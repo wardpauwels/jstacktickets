@@ -1,9 +1,9 @@
 package be.jstack.ticketing.controller;
 
 import be.jstack.ticketing.entity.Company;
-import be.jstack.ticketing.exception.CompanyNotFoundException;
-import be.jstack.ticketing.exception.ProjectNotFoundException;
+import be.jstack.ticketing.exception.*;
 import be.jstack.ticketing.service.CompanyService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-
     private final CompanyService companyService;
 
     @Autowired
@@ -37,15 +36,44 @@ public class CompanyController {
     }
 
     @PostMapping
-    public void addNewCompany(@RequestBody Company company) {
-        companyService.addCompany(company);
+    public Company addNewCompany(@RequestBody Company company) {
+        return companyService.addCompany(company);
     }
 
-    @PostMapping("/{companyId}/projects/{projectId}")
-    public void addProjectWithIdToCompanyWithId(@PathVariable String companyId, @PathVariable String projectId) {
+    @PatchMapping("/projects")
+    public void addProjectWithIdToCompanyWithId(@RequestBody String bodyString) {
+        JSONObject jsonBody = new JSONObject(bodyString);
         try {
-            companyService.addProjectToBusiness(companyId, projectId);
-        } catch (CompanyNotFoundException | ProjectNotFoundException e) {
+            companyService.addProjectToCompany(jsonBody.getString("companyId"), jsonBody.getString("projectId"));
+        } catch (CompanyNotFoundException | ProjectNotFoundException | AlreadyContainsProjectException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PatchMapping("/users")
+    public void addUserWithIdToCompanyWithId(@RequestBody String bodyString) {
+        JSONObject jsonBody = new JSONObject(bodyString);
+        try {
+            companyService.addUserToCompany(jsonBody.getString("companyId"), jsonBody.getString("userId"));
+        } catch (CompanyNotFoundException | UserNotFoundException | AlreadyContainsUserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @DeleteMapping("/{companyId}/projects/{projectId}")
+    public void deleteProjectFromCompany(@PathVariable String companyId, @PathVariable String projectId) {
+        try {
+            companyService.deleteProjectFromCompany(companyId, projectId);
+        } catch (ProjectNotFoundException | CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @DeleteMapping("/{companyId}/projects/{userId}")
+    public void deleteUserFromCompany(@PathVariable String companyId, @PathVariable String userId) {
+        try {
+            companyService.deleteUserFromCompany(companyId, userId);
+        } catch (UserNotFoundException | CompanyNotFoundException e) {
             e.printStackTrace();
         }
     }

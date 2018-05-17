@@ -4,7 +4,7 @@ public enum TicketTypes {
     BUG("bug"),
     IMPROVEMENT("improvement"),
     CHANGE("change"),
-    NEWFEATURE("newfeature");
+    FEATURE("feature");
 
     private final String text;
 

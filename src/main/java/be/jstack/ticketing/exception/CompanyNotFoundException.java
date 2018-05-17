@@ -1,6 +1,8 @@
 package be.jstack.ticketing.exception;
 
-public class CompanyNotFoundException extends Exception {
+import javax.ejb.ObjectNotFoundException;
+
+public class CompanyNotFoundException extends ObjectNotFoundException {
     public CompanyNotFoundException(String message) {
         super(message);
     }

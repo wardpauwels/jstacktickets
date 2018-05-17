@@ -1,6 +1,8 @@
 package be.jstack.ticketing.exception;
 
-public class ProjectNotFoundException extends Exception {
+import javax.ejb.ObjectNotFoundException;
+
+public class ProjectNotFoundException extends ObjectNotFoundException {
 
     public ProjectNotFoundException(String message) {
         super(message);

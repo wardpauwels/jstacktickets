@@ -2,19 +2,19 @@ package be.jstack.ticketing.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     private String id;
@@ -24,8 +24,6 @@ public class User implements UserDetails {
     private String lastName;
     private String firstName;
     private String phoneNumber;
-    @DBRef
-    private Company company;
     private List<GrantedAuthority> authorities;
 
     @Override
