@@ -17,4 +17,8 @@ import java.io.Serializable;
 public class NewFeature extends Ticket implements Serializable {
 
     private String description;
+
+    public String getDescription() {
+        return "Decription of new feature:\n" + description;
+    }
 }

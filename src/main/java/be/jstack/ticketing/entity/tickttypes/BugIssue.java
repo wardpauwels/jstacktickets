@@ -20,4 +20,13 @@ public class BugIssue extends Ticket {
     private String simulateSteps;
     private String currentOutcome;
     private String expectedOutcome;
+
+    public String getDescription() {
+        String description = "Steps simulated for bug:\n" + simulateSteps;
+        description += "\nCurrent outcome:\n" + currentOutcome;
+        description += "\nExpected outcome:\n" + expectedOutcome;
+
+        return description;
+    }
+
 }

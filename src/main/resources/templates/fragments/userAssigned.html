@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<p th:fragment="userAssigned" style="margin-bottom:10px;">
+    Ticket has been assigned to <strong th:text="${ticket.getResolver().getFullName()}"></strong>.
+</p>
+</body>
+</html>

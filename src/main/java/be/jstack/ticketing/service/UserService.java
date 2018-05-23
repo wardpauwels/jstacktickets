@@ -2,6 +2,7 @@ package be.jstack.ticketing.service;
 
 import be.jstack.ticketing.data.UserRepository;
 import be.jstack.ticketing.entity.User;
+import be.jstack.ticketing.util.constants.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,5 +61,23 @@ public class UserService implements UserDetailsService {
     Optional<User> getCurrentLoggedInUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findUserByUsername(username);
+    }
+
+    public User addAuthorityToUser(String username, String authority) {
+        Optional<User> user = findUserByUsername(username);
+        if (user.isPresent()) {
+            user.get().addAuthority(Authority.valueOf(authority.toUpperCase()));
+            return userRepository.save(user.get());
+        }
+        return null;
+    }
+
+    public User removeAuthorityForUser(String username, String authority) {
+        Optional<User> user = findUserByUsername(username);
+        if (user.isPresent()) {
+            user.get().removeAuthority(Authority.valueOf(authority.toUpperCase()));
+            return userRepository.save(user.get());
+        }
+        return null;
     }
 }

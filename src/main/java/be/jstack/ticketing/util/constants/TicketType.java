@@ -1,6 +1,6 @@
 package be.jstack.ticketing.util.constants;
 
-public enum TicketTypes {
+public enum TicketType {
     BUG("bug"),
     IMPROVEMENT("improvement"),
     CHANGE("change"),
@@ -8,7 +8,7 @@ public enum TicketTypes {
 
     private final String text;
 
-    TicketTypes(final String text) {
+    TicketType(final String text) {
         this.text = text;
     }
 

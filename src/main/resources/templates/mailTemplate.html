@@ -1,0 +1,105 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body style="margin:0; padding:0; border: 0 none; font-size: 9px; font-family: Verdana, sans-serif; background-color: #efefef;">
+
+<!-- **********BEGIN WRITE ABOVE LINE********** -->
+<table align="center">
+    <tr>
+        <td>
+            <p style='text-align:center'><span style='mso-fareast-font-family:"Times New Roman";color:#999'>## Reply ABOVE THIS LINE to add a note to this request ##</span>
+            </p>
+        </td>
+    </tr>
+</table>
+<!-- **********END WRITE ABOVE LINE********** -->
+
+<table style="width: 740px; margin: auto auto 20px auto; border: 1px #ccc solid; background: #fff; font-size: 11px; font-family: Verdana, sans-serif;"
+       align="center">
+    <tbody>
+    <tr>
+        <td colspan="2" style="word-wrap: break-word; border:0;padding: 9px; color: #fff; background: #08ace1;">
+            <div style="font-family:Arial, Helvetica, sans-serif; -webkit-text-size-adjust:none; font-size:24px; line-height:28px; color:#ffffff;"
+                 align="left"><b>jstack Helpdesk Request - Ticket # <span th:text="${ticket.getId()}"></span></b></div>
+            <p style="color: #ccc;margin-top:0;margin-bottom:0;font-style: italic;">Changing the World, One Ticket at a
+                Time</p>
+        </td>
+    </tr>
+    <tr style="padding: 10px;">
+        <!-- **********************BEGIN LEFT COLUMN****************************** -->
+        <td style="width: 400px; padding: 15px 0 0 15px; vertical-align: top;">
+            <p style="margin-bottom: 10px;"><span th:text="${ticket.getCreator().getFullName()}"></span> ,</p>
+
+            <!-- **********BEGIN NEW TICKET********** -->
+            <div th:if="${ticket.getTicketStatus().getStatus()}=='NEW'"
+                 th:include="fragments/newTicket::newTicket"
+                 th:with="ticket=${ticket},user=${user}"></div>
+            <!-- **********END NEW TICKET********** -->
+
+            <!-- **********BEGIN TICKET ASSIGNED********** -->
+            <div th:if="${ticket.getTicketStatus().getStatus()}=='ASSIGNEDRESOLVER'"
+                 th:include="fragments/userAssigned::userAssigned"
+                 th:with="ticket=${ticket}"></div>
+            <!-- **********END TICKET ASSIGNED********** -->
+
+            <!-- **********BEGIN TICKET COMMENT********** -->
+            <div th:if="${ticket.getTicketStatus().getStatus()}=='ANSWERED'"
+                 th:include="fragments/ticketAnswered::ticketAnswered"
+                 th:with="ticket=${ticket},user=${user}"></div>
+            <!-- **********END TICKET COMMENT********** -->
+
+            <!-- **********BEGIN TICKET SUMMARY********** -->
+            <br/>
+            <div th:include="fragments/ticketSummary::ticketSummary"
+                 th:with="ticket=${ticket}"></div>
+            <!-- **********************END TICKET SUMMARY****************************** -->
+
+        </td>
+        <!-- **********************END LEFT COLUMN****************************** -->
+
+        <!-- **********************BEGIN RIGHT COLUMN****************************** -->
+        <td style="width: 240px; vertical-align: top;">
+            <div style="margin:15px	 8px 15px;padding: 9px; border: 1px #ccc solid; font-size: 10px;">
+                <div style="color: #444; font-size: 18px; line-height: 30px; font-weight: bold; margin: 6px 0; padding: 0;"
+                     class="sw_sidebar_title">Your Ticket Details
+                </div>
+                <hr style="height: 1px; color: #ccc;"/>
+                <p style="color: #444; font-size: 11px; line-height: 18px; margin-top: 0; margin-bottom: 1em;">
+                <span th:switch="${user}">
+                        <span th:case="${user.isStaff()}">
+                        <!-- **********************BEGIN ADMIN NOTES****************************** -->
+                            <span th:include="fragments/adminNotes::adminNotes"
+                                  th:with="ticket=${ticket}"></span>
+                            <!-- **********************END ADMIN NOTES******************************** -->
+                            </span>
+                    <span th:case="*">
+                        <!-- **********************BEGIN USER NOTES****************************** -->
+                            <span th:include="fragments/userNotes::userNotes"
+                                  th:with="ticket=${ticket}"></span>
+                        <!-- **********************END USER NOTES******************************** -->
+                        </span>
+                </span>
+                </p>
+                <hr style="height: 1px; color: #ccc;"/>
+                <div style="color: #444; font-size: 18px; line-height: 30px; font-weight: bold; margin: 6px 0; padding: 0;"
+                     class="sw_sidebar_title">Update Your Ticket
+                </div>
+                <p style="color: #444; font-size: 11px; line-height: 18px; margin-top: 0; margin-bottom: 1em;">To update
+                    this request simply reply to this email.</p>
+                <p style="color: #444; font-size: 11px; line-height: 18px; margin-top: 0; margin-bottom: 1em;">
+                    Alternatively you can update your ticket in the <a style="color:#f49900; text-decoration: none"
+                                                                       href=
+                                                                               "{% if recipient.role == 'admin' or recipient.role == 'helpdesk_admin' %}
+									{{ticket.url}}
+								{% else %}
+									{{ticket.portal_url}}
+								{% endif %}">User Portal.</a>
+                </p>
+            </div>
+        </td>
+        <!-- **********************END RIGHT COLUMN****************************** -->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

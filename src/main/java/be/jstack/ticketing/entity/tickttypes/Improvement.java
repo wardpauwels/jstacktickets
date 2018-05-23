@@ -19,4 +19,12 @@ public class Improvement extends Ticket implements Serializable {
     private String improvementExplanation;
     private String currentFeature;
     private String improvement;
+
+    public String getDescription() {
+        String description = "Explanation of improvement:\n" + improvementExplanation;
+        description += "\nCurrent feature:\n" + currentFeature;
+        description += "\nImprovement:\n" + improvement;
+
+        return description;
+    }
 }

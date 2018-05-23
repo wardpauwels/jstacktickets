@@ -25,7 +25,7 @@ public class CompanyService {
     }
 
     public Company addCompany(Company company) {
-        return this.companyRepository.save(company);
+        return companyRepository.save(company);
     }
 
     public Optional<Company> findCompanyById(String id) {

@@ -2,6 +2,7 @@ package be.jstack.ticketing.controller;
 
 import be.jstack.ticketing.entity.User;
 import be.jstack.ticketing.service.UserService;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -29,5 +30,17 @@ public class UserController {
     @PostMapping
     public User addNewUser(@RequestBody User user) {
         return userService.addUser(user);
+    }
+
+    @PatchMapping("/{username}/roles")
+    public User addAuthorityToUser(@PathVariable String username, @RequestBody String role) {
+        JSONObject jsonBody = new JSONObject(role);
+        return userService.addAuthorityToUser(username, jsonBody.getString("role"));
+    }
+
+    @DeleteMapping("/{username}/roles")
+    public User removeAuthorityFromUser(@PathVariable String username, @RequestBody String role) {
+        JSONObject jsonBody = new JSONObject(role);
+        return userService.removeAuthorityForUser(username, jsonBody.getString("role"));
     }
 }

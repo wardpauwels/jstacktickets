@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="userNotes">
+    <strong>Ticket #</strong> <span th:text="${ticket.getId()}"></span><br/>
+    <strong>Date:</strong> <span th:text="${ticket.getCreationDate()}"></span><br/>
+    <br/>
+    <strong>Assigned To:</strong> <a style="color:#f49900; text-decoration: none"
+                                     th:if="${ticket.getResolver()}!=null"
+                                     th:href="'mailto:'+${ticket.getResolver().getEmail()}"
+                                     th:text="${ticket.getResolver().getFullName()}"></a><br/>
+    <strong>Cell Phone:</strong> <span th:text="${ticket.getCreator().getPhoneNumber()}"></span><br>
+    <br/>
+    <strong>Ticket URL:</strong> <a style="color:#f49900; text-decoration: none"
+                                    th:href="${ticket.getId()}"
+                                    th:text="'Ticket #'+${ticket.getId()}"></a><br/>
+    <strong>Priority Level:</strong> <span th:text="${ticket.getPriorityLevel()}"></span><br/>
+</div>
+</body>
+</html>

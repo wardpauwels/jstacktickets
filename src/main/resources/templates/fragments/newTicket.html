@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="newTicket">
+    <div th:if="${user.isStaff()==false}">
+        <div th:if="${ticket.getResolver()}==null">
+            <p style="margin-bottom:10px;">Your ticket has been received by the RHPS Help Desk.</p>
+            <p style="margin-bottom:10px;">Someone will contact you shortly so please watch your inbox for
+                messages like this one.</p>
+        </div>
+        <div th:if="${ticket.getResolver()}!=null">
+            <p style="margin-bottom:10px;">Your ticket has been received by the RHPS Help Desk and has been
+                assigned to <strong th:text="${ticket.getResolver.getFullName()}"></strong>.</p>
+            <p style="margin-bottom:10px;">We will contact you shortly so please watch your inbox for
+                messages
+                like this one.</p>
+        </div>
+    </div>
+    <div th:if="${user.isStaff()==true}">
+        <div th:if="${ticket.getResolver()}==null">
+            <p style="margin-bottom:10px;">A <strong th:text="${ticket.getPriorityLevel()}"></strong>
+                priority
+                ticket has been submitted by <strong
+                        th:text="${ticket.getCreator().getFullName()}"></strong> and has not yet been
+                assigned.</p>
+        </div>
+        <div th:if="${ticket.getResolver()}!=null">
+            <p style="margin-bottom:10px;">A <strong th:text="${ticket.getPriorityLevel()}"></strong>
+                priority
+                ticket has been submitted by <strong
+                        th:text="${ticket.getCreator().getFullName()}"></strong> and is assigned to <strong
+                        th:text="${ticket.getResolver().getFullName()}"></strong>.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

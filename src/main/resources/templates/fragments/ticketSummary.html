@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="ticketSummary">
+    <table style="border: 1px #ccc solid; background: #eee; width: 394px; font-size: 11px; font-family: verdana, sans-serif">
+        <tr>
+            <td>
+                <div style="margin: 9px;">
+                    <div style="color: #444; font-size: 18px; line-height: 30px; font-weight: bold; margin: 6px 0; padding: 0;"
+                         class="sw_sidebar_title" th:text="'Ticket # '+${ticket.getId()}">
+                    </div>
+                    <p><strong>Summary:</strong> <span th:text="${ticket.getTitle()}"></span></p>
+                    <p><strong>Description:</strong><br/>
+                    <pre th:text="${ticket.getDescription()}"></pre>
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

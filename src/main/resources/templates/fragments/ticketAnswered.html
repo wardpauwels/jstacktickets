@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="ticketAnswered">
+    <p style="font-style: italic;margin-bottom:10px;">On <span
+            th:text="${ticket.getLastAnswer().getAnswerTime()}"></span>,
+        <strong th:text="${ticket.getLastAnswer().getUser().getFullName()}"></strong> wrote:</p>
+    <p><strong th:text="${ticket.getLastAnswer().getAnswer()}"></strong></p>
+    <div th:if="${user.isStaff()}==false">
+        <p><em>Please reply directly to this email for all communications regarding this ticket.</em></p>
+    </div>
+    <div th:if="${user.isStaff()}==true">
+        <p><em>Please login to the helpdesk to view this ticket.</em></p>
+    </div>
+</div>
+</body>
+</html>
