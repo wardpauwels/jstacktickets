@@ -2,23 +2,21 @@ package be.jstack.ticketing.entity.tickttypes;
 
 import be.jstack.ticketing.entity.Environment;
 import be.jstack.ticketing.entity.Ticket;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@NoArgsConstructor
-@Document(collection = "ticket")
 public class BugIssue extends Ticket {
 
+    @ApiModelProperty(notes = "The environment where the bug is happening")
     private Environment environment;
+    @ApiModelProperty(notes = "A detailed description of how to replicate the bug", required = true)
     private String simulateSteps;
+    @ApiModelProperty(notes = "The current outcome of the steps", required = true)
     private String currentOutcome;
+    @ApiModelProperty(notes = "The expected outcome of the steps", required = true)
     private String expectedOutcome;
 
     public String getDescription() {

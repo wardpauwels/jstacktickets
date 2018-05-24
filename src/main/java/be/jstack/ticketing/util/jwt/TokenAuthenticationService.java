@@ -1,5 +1,6 @@
-package be.jstack.ticketing.service;
+package be.jstack.ticketing.util.jwt;
 
+import be.jstack.ticketing.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;

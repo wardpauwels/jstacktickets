@@ -2,6 +2,7 @@ package be.jstack.ticketing.entity;
 
 import be.jstack.ticketing.exception.AlreadyContainsProjectException;
 import be.jstack.ticketing.exception.AlreadyContainsUserException;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -17,11 +18,15 @@ import java.util.Map;
 public class Company {
 
     @Id
+    @ApiModelProperty(notes = "The database generated user ID")
     private String id;
+    @ApiModelProperty(notes = "The company's name", required = true)
     private String name;
     @DBRef
+    @ApiModelProperty(notes = "The projects associated to the company")
     private Map<String, Project> projects;
     @DBRef
+    @ApiModelProperty(notes = "The users who are working at the company")
     private Map<String, User> users;
 
     public void addProject(Project project) throws AlreadyContainsProjectException {

@@ -17,7 +17,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, be.jstack.ticketing.service.Service<User> {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
@@ -27,11 +27,18 @@ public class UserService implements UserDetailsService {
         this.encoder = encoder;
     }
 
-    public List<User> findAllUsers() {
+    @Override
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User addUser(User user) {
+    @Override
+    public Optional<User> findById(String userId) {
+        return userRepository.findById(userId);
+    }
+
+    @Override
+    public User add(User user) {
         if (!findUserByUsername(user.getUsername()).isPresent()) {
             user.setPassword(encoder.encode(user.getPassword()));
             return userRepository.save(user);
@@ -43,11 +50,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    Optional<User> findUserById(String userId) {
-        return userRepository.findById(userId);
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optUser = userRepository.findByUsername(username);
         if (!optUser.isPresent()) {

@@ -53,7 +53,6 @@
             <div th:include="fragments/ticketSummary::ticketSummary"
                  th:with="ticket=${ticket}"></div>
             <!-- **********************END TICKET SUMMARY****************************** -->
-
         </td>
         <!-- **********************END LEFT COLUMN****************************** -->
 
@@ -87,13 +86,8 @@
                 <p style="color: #444; font-size: 11px; line-height: 18px; margin-top: 0; margin-bottom: 1em;">To update
                     this request simply reply to this email.</p>
                 <p style="color: #444; font-size: 11px; line-height: 18px; margin-top: 0; margin-bottom: 1em;">
-                    Alternatively you can update your ticket in the <a style="color:#f49900; text-decoration: none"
-                                                                       href=
-                                                                               "{% if recipient.role == 'admin' or recipient.role == 'helpdesk_admin' %}
-									{{ticket.url}}
-								{% else %}
-									{{ticket.portal_url}}
-								{% endif %}">User Portal.</a>
+                    Alternatively you can update your ticket in the
+                    <a style="color:#f49900; text-decoration: none" href="">User Portal.</a>
                 </p>
             </div>
         </td>

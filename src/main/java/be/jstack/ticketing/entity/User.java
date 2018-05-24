@@ -1,6 +1,7 @@
 package be.jstack.ticketing.entity;
 
 import be.jstack.ticketing.util.constants.Authority;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -21,14 +22,22 @@ import java.util.List;
 public class User implements UserDetails, Serializable {
 
     @Id
+    @ApiModelProperty(notes = "The database generated user ID")
     private String id;
     @Indexed(unique = true)
+    @ApiModelProperty(notes = "The username of the user", required = true)
     private String username;
+    @ApiModelProperty(notes = "The password of the user", required = true)
     private String password;
+    @ApiModelProperty(notes = "The email of the user", required = true)
     private String email;
+    @ApiModelProperty(notes = "The first name of the user", required = true)
     private String lastName;
+    @ApiModelProperty(notes = "The last name of the user", required = true)
     private String firstName;
+    @ApiModelProperty(notes = "The phone number of the user")
     private String phoneNumber;
+    @ApiModelProperty(notes = "The authority roles of the user")
     private List<GrantedAuthority> authorities;
 
     public void addAuthority(Authority authority) {

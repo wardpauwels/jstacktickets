@@ -1,7 +1,7 @@
 package be.jstack.ticketing.util.filters;
 
 import be.jstack.ticketing.entity.User;
-import be.jstack.ticketing.service.TokenAuthenticationService;
+import be.jstack.ticketing.util.jwt.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

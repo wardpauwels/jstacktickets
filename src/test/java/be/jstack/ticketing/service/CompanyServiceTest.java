@@ -49,7 +49,7 @@
 //        ticket.setCreator(creator);
 //        company.setId("5afd4956a9f60759a8fd6337");
 //        company.setName("Google");
-//        company.addUser(creator);
+//        company.add(creator);
 //    }
 //
 //    @Test

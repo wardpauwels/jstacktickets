@@ -1,27 +1,23 @@
 package be.jstack.ticketing.entity.tickttypes;
 
 import be.jstack.ticketing.entity.Ticket;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import java.io.Serializable;
-
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-@NoArgsConstructor
-@Document(collection = "ticket")
-public class Improvement extends Ticket implements Serializable {
+public class Improvement extends Ticket {
 
-    private String improvementExplanation;
+    @ApiModelProperty(notes = "The current feature which needs a change/improvement", required = true)
+    private String feature;
+    @ApiModelProperty(notes = "What does the current feature do now", required = true)
     private String currentFeature;
+    @ApiModelProperty(notes = "What can make the feature better", required = true)
     private String improvement;
 
     public String getDescription() {
-        String description = "Explanation of improvement:\n" + improvementExplanation;
+        String description = "Feature:\n" + feature;
         description += "\nCurrent feature:\n" + currentFeature;
         description += "\nImprovement:\n" + improvement;
 

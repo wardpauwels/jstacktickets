@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompanyService {
+public class CompanyService implements be.jstack.ticketing.service.Service<Company> {
     private final CompanyRepository companyRepository;
     private final ProjectService projectService;
     private final UserService userService;
@@ -24,21 +24,29 @@ public class CompanyService {
         this.userService = userService;
     }
 
-    public Company addCompany(Company company) {
-        return companyRepository.save(company);
-    }
-
-    public Optional<Company> findCompanyById(String id) {
-        return companyRepository.findById(id);
-    }
-
-    public List<Company> getAllCompanies() {
+    @Override
+    public List<Company> findAll() {
         return companyRepository.findAll();
     }
 
+    @Override
+    public Optional<Company> findById(String id) {
+        return companyRepository.findById(id);
+    }
+
+    public Optional<Company> findByName(String companyName) {
+        return companyRepository.findByName(companyName);
+    }
+
+
+    @Override
+    public Company add(Company company) {
+        return companyRepository.save(company);
+    }
+
     public void addProjectToCompany(String companyId, String projectId) throws CompanyNotFoundException, ProjectNotFoundException, AlreadyContainsProjectException {
-        Optional<Company> optionalCompany = findCompanyById(companyId);
-        Optional<Project> optionalProject = projectService.findProjectById(projectId);
+        Optional<Company> optionalCompany = findById(companyId);
+        Optional<Project> optionalProject = projectService.findById(projectId);
         if (optionalCompany.isPresent()) {
             if (optionalProject.isPresent()) {
                 optionalCompany.get().addProject(optionalProject.get());
@@ -48,8 +56,8 @@ public class CompanyService {
     }
 
     public void deleteProjectFromCompany(String companyId, String projectId) throws ProjectNotFoundException, CompanyNotFoundException {
-        Optional<Company> optionalCompany = findCompanyById(companyId);
-        Optional<Project> optionalProject = projectService.findProjectById(projectId);
+        Optional<Company> optionalCompany = findById(companyId);
+        Optional<Project> optionalProject = projectService.findById(projectId);
         if (optionalCompany.isPresent()) {
             if (optionalProject.isPresent()) {
                 optionalCompany.get().deleteProject(optionalProject.get());
@@ -59,8 +67,8 @@ public class CompanyService {
     }
 
     public void addUserToCompany(String companyId, String userId) throws CompanyNotFoundException, UserNotFoundException, AlreadyContainsUserException {
-        Optional<Company> optionalCompany = findCompanyById(companyId);
-        Optional<User> optionalUser = userService.findUserById(userId);
+        Optional<Company> optionalCompany = findById(companyId);
+        Optional<User> optionalUser = userService.findById(userId);
         if (optionalCompany.isPresent()) {
             if (optionalUser.isPresent()) {
                 optionalCompany.get().addUser(optionalUser.get());
@@ -70,8 +78,8 @@ public class CompanyService {
     }
 
     public void deleteUserFromCompany(String companyId, String userId) throws CompanyNotFoundException, UserNotFoundException {
-        Optional<Company> optionalCompany = findCompanyById(companyId);
-        Optional<User> optionalUser = userService.findUserById(userId);
+        Optional<Company> optionalCompany = findById(companyId);
+        Optional<User> optionalUser = userService.findById(userId);
         if (optionalCompany.isPresent()) {
             if (optionalUser.isPresent()) {
                 optionalCompany.get().deleteUser(optionalUser.get());

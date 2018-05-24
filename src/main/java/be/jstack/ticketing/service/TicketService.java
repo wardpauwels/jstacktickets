@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class TicketService {
+public class TicketService implements be.jstack.ticketing.service.Service<Ticket> {
     private final TicketRepository ticketRepository;
     private final ProjectService projectService;
     private final UserService userService;
@@ -37,6 +37,16 @@ public class TicketService {
         this.mailSenderService = mailSenderService;
     }
 
+    @Override
+    public List<Ticket> findAll() {
+        return ticketRepository.findAll();
+    }
+
+    @Override
+    public Optional<Ticket> findById(String ticketId) {
+        return ticketRepository.findById(ticketId);
+    }
+
     public List<Ticket> findAllTicketsForType(String tickettype) {
         List<Ticket> tickets = ticketRepository.findAll();
         if (tickettype == null) return tickets;
@@ -50,11 +60,8 @@ public class TicketService {
         } else return null;
     }
 
-    public Optional<Ticket> findTicketWithId(String ticketId) {
-        return ticketRepository.findById(ticketId);
-    }
-
-    public Ticket createNewTicket(Ticket ticket) {
+    @Override
+    public Ticket add(Ticket ticket) {
         Optional<User> user = userService.getCurrentLoggedInUser();
         user.ifPresent(ticket::setCreator);
         ticket.setCreationDate(new Date());
@@ -64,25 +71,24 @@ public class TicketService {
         return ticket;
     }
 
-    public Ticket updateTicketStatus(String ticketId, TicketStatus ticketStatus) {
+    public void updateTicketStatus(String ticketId, TicketStatus ticketStatus) {
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
         if (ticket.isPresent()) {
             ticket.get().setTicketStatus(ticketStatus);
             if (ticketStatus == TicketStatus.SEEN) ticket.get().setTicketSeenTime(new Date());
-            return ticketRepository.save(ticket.get());
+            ticketRepository.save(ticket.get());
         }
-        return null;
     }
 
     public List<Ticket> getTicketsForProjectWithId(String projectId) throws ProjectNotFoundException {
-        Optional<Project> optionalProject = projectService.findProjectById(projectId);
+        Optional<Project> optionalProject = projectService.findById(projectId);
         if (optionalProject.isPresent()) {
             return ticketRepository.findAllByProject(optionalProject.get());
         } else throw new ProjectNotFoundException(projectId);
     }
 
     public void assignResolverToTicket(String ticketId, String username) {
-        Optional<Ticket> ticket = findTicketWithId(ticketId);
+        Optional<Ticket> ticket = findById(ticketId);
         Optional<User> user = userService.findUserByUsername(username);
         if (ticket.isPresent() && user.isPresent()) {
             ticket.get().setResolver(user.get());
@@ -93,18 +99,14 @@ public class TicketService {
     }
 
     public Ticket answerOnTicketWithId(String ticketId, String answerString) {
-        Optional<Ticket> ticket = findTicketWithId(ticketId);
+        Optional<Ticket> ticket = findById(ticketId);
         Optional<User> user = userService.getCurrentLoggedInUser();
-        if (user.isPresent()) {
-            if (ticket.isPresent()) {
-                if (user.get().isStaff() || ticket.get().getCreator().equals(user.get())) {
-                    Answer answer = createAnswer(user.get(), answerString);
-                    ticket.get().addAnswerToTicket(answer);
-                    ticket = Optional.of(updateTicketStatus(ticket.get().getId(), TicketStatus.ANSWERED));
-                    sendMail(ticket.get(), answer);
-                    return ticket.get();
-                }
-            }
+        if (user.isPresent() && ticket.isPresent() && (user.get().isStaff() || ticket.get().getCreator().equals(user.get()))) {
+            Answer answer = createAnswer(user.get(), answerString);
+            ticket.get().addAnswerToTicket(answer);
+            updateTicketStatus(ticket.get().getId(), TicketStatus.ANSWERED);
+            sendMail(ticket.get(), answer);
+            return ticket.get();
         }
         return null;
     }
@@ -114,9 +116,25 @@ public class TicketService {
     }
 
     private void sendMail(Ticket ticket, Answer answer) {
-        Optional<User> user = userService.getCurrentLoggedInUser();
-        Runnable myrunnable = () -> user.ifPresent(user1 -> mailSenderService.sendMail(user1, ticket, answer));
-        new Thread(myrunnable).start();//Call it when you need to run the function
+        Optional<User> staffUser = userService.findUserByUsername("ward");
+        User ticketUser = ticket.getCreator();
+        User assignedResolver = ticket.getResolver();
+
+        Runnable mailUser;
+        Runnable mailStaff;
+
+        if (staffUser.isPresent()) {
+            if (assignedResolver == null) {
+                mailUser = () -> mailSenderService.sendMail(ticketUser, ticket, answer);
+                mailStaff = () -> mailSenderService.sendMail(staffUser.get(), ticket, answer);
+            } else {
+                mailUser = () -> mailSenderService.sendMail(ticketUser, ticket, answer);
+                mailStaff = () -> mailSenderService.sendMail(assignedResolver, ticket, answer);
+            }
+        } else return;
+
+        new Thread(mailUser).start();
+        new Thread(mailStaff).start();
     }
 
     private List<Ticket> getBugTicketsFromList(List<Ticket> tickets) {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProjectService {
+public class ProjectService implements be.jstack.ticketing.service.Service<Project> {
     private final ProjectRepository projectRepository;
 
     @Autowired
@@ -17,15 +17,18 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public List<Project> findAllProjects() {
+    @Override
+    public List<Project> findAll() {
         return projectRepository.findAll();
     }
 
-    public Project addProject(Project project) {
-        return projectRepository.save(project);
+    @Override
+    public Optional<Project> findById(String projectId) {
+        return projectRepository.findById(projectId);
     }
 
-    public Optional<Project> findProjectById(String projectId) {
-        return projectRepository.findById(projectId);
+    @Override
+    public Project add(Project project) {
+        return projectRepository.save(project);
     }
 }
